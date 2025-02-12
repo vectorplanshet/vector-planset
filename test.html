@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Planshet</title>
+    <link rel="shortcut icon" href="1321457.png" />
+    <div class="template-container">
+    </div>    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure/3.1.0/leaflet-measure.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch/dist/geosearch.css" />
+    <script
+    src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
+    integrity="sha384-8SqKZR7V8uOetpjjbcNJHvwuHpb074WS0UXjCLhzfJUqYn3B/uWx1WVv5mwRp1mV"
+    crossorigin="anonymous"
+></script>
+    <style>
+        /* General Map Styles */
+        #map {
+            height: 100vh;
+        }
+
+        html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+        /* Modal Background */
+        .modal-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #f7f7f7, #e0e0e0);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 450px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .modal h2 {
+            font-size: 24px;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            transition: border 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+        .modal-button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-top: 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-button:hover {
+            background-color: #357ab7;
+        }
+        .modal-button:focus {
+            outline: none;
+        }
+        .modal-close {
+            background-color: red;
+        }
+        /* Сдвигаем контейнер вправо для нужных объектов */
+        .shifted-info-container {
+            margin-left: 10px; /* Сдвиг на 20px вправо, можно менять значение */
+        }
+        .shifted-info-containerr {
+            margin-right: 70px;
+        }
+    
+        .red-id {
+            color: red;
+        }
+        .blue-id {
+            color: #006aff;
+        }
+        
+
+        /* Стили для текста в зависимости от цвета */
+.red-id .label-container,
+.red-id .r-container,
+.red-id .rls-container 
+.red-id .icon-container {
+    color: red;
+}
+
+.blue-id .label-container,
+.blue-id .r-container,
+.blue-id .rls-container 
+.blue-id .icon-container {
+    color: #006aff; /* Синий цвет для текста */
+}
+        .shifted-id-x-101 {
+            margin-left: 20px;
+       }
+        .shifted-id {
+            margin-left: 15px;
+        }
+        .shifted-id-grumble {
+            margin-left: 25px;
+        }
+        .shifted-id-kinzhal {
+            margin-left: 25px;
+        }
+        .info-container {
+            line-height: 18px;
+        }
+        .label-container {
+            font-size: 14px;
+            font-weight: bold;
+
+            -webkit-text-stroke-color: black;
+        }
+        .r-container {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .rls-container {
+            font-size: 14px;
+            display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+        }
+        /* Delete Button */
+        #deleteButton {
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            background-color: red;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1003;
+        }
+        /* Smooth Transition for Modals */  
+        .modal.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .icon-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    position: absolute;
+    white-space: nowrap; /* Убираем перенос текста */
+}
+        .icon-container .icon {
+            width: 33px;
+            height: 33px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Modal Input Background for Target Coordinates */
+        #targetModal {
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #alert-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+        #alert-menu {
+            background: white;
+            padding: 15px;
+            display: none;
+            border: 2px solid #333;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            font-family: Arial, sans-serif;
+        }
+        #alert-menu h3 {
+            margin: 0 0 10px;
+            text-align: center;
+            font-size: 16px;
+            color: #333;
+        }
+        #alert-menu div {
+            margin-bottom: 5px;
+        }
+        #alert-menu input[type=checkbox] {
+            margin-right: 5px;
+        }
+        button#alert-button {
+            background: #ff0800;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 150px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button#alert-button:hover {
+            background: #c9302c;
+        }
+        #overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('kod.png') center/cover no-repeat;
+    pointer-events: none; /* Позволяет кликам проходить сквозь */
+    z-index: 1000; /* Поверх карты */
+    opacity: 0.6; /* Сделать картинку менее прозрачной */
+    transition: filter 0.3s ease; /* Плавный переход фильтра */
+}
+/* Кастомизация всплывающего окна */
+.leaflet-popup-content {
+    background-color: #f0f0f0; /* Светлый фон */
+    color: #333;               /* Темный цвет текста */
+    padding: 10px;
+    border-radius: 10px;       /* Скругленные углы */
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+/* Стиль для стрелочки всплывающего окна */
+.leaflet-popup-tip {
+    background-color: #f0f0f0;
+}
+
+/* Стиль для заголовка в окне */
+.leaflet-popup-content h3 {
+    margin-top: 0;
+    font-size: 16px;
+    color: #555;
+}
+.leaflet-control.ruler {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        left: auto;
+        top: auto;
+      }
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Arial", sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+        }
+
+        /* Стили меню */
+        #passwordContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0033cc, #0066ff); /* Градиент синего */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            z-index: 1005;
+        }
+
+        #passwordContainer h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        #passwordInput {
+            width: 250px;
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        #submitButton {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: #0044cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #submitButton:hover {
+            background: #002288;
+        }
+    </style>
+</head>
+<body>
+    <div id="passwordContainer">
+        <p>Введите пароль для доступа к карте:</p>
+        <input type="password" id="passwordInput" placeholder="Введите пароль">
+        <button id="submitButton">Войти</button>
+    </div>
+    <div id="map"></div>
+    <div class="overlay"></div>
+    <button id="deleteButton"><i class="fas fa-trash-alt"></i> Удалить объект</button>
+<!-- Модальное окно для отображения координат -->
+<div class="modal" id="coordinatesModal">
+    <h2>Координаты:</h2>
+    <p id="coordinates"></p>
+    <button onclick="closeModal()">Закрыть</button>
+</div>
+<div id="overlay"></div>
+
+
+    <!-- Modal Elements -->
+    <div class="modal-background" id="modalBackground"></div>
+    <div class="modal" id="speedModal">
+        <h2><i class="fas fa-tachometer-alt"></i> Введите скорость объекта (км/ч):</h2>
+        <input type="text" id="speedInput" placeholder="Введите скорость" />
+        <button class="modal-button" id="speedSubmit"><i class="fas fa-check"></i> Подтвердить</button>
+        <button class="modal-button modal-close" id="speedClose"><i class="fas fa-times"></i> Закрыть</button>
+    </div>
+    <div class="modal-background" id="modalBackground"></div>
+    <div class="modal" id="targetModal">
+        <h2><i class="fas fa-map-marker-alt"></i> Введите цель (Координаты, например: 53.9,27.5667):</h2>
+        <input type="text" id="targetInput" placeholder="Введите координаты" />
+        <button class="modal-button" id="targetSubmit"><i class="fas fa-check"></i> Подтвердить</button>
+        <button class="modal-button modal-close" id="targetClose"><i class="fas fa-times"></i> Закрыть</button>
+    </div>
+    
+    <div id="alert-container">
+        <button id="alert-button"><i class="fas fa-bell"></i> Дать тревогу</button>
+        <div id="alert-menu">
+            <h3>Дать тревогу</h3>
+            <div>
+                <input type="checkbox" id="Гомельская область"><label for="Гомельская область">Гомельская область</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Брестская область"><label for="Брестская область">Брестская область</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Минск"><label for="Минск">Минск</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Минская область"><label for="Минская область">Минская область</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Могилёвская область"><label for="Могилёвская область">Могилёвская область</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Витебская область"><label for="Витебская область">Витебская область</label>
+            </div>
+            <div>
+                <input type="checkbox" id="Гродненская область"><label for="Гродненская область">Гродненская область</label>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure/3.1.0/leaflet-measure.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch/dist/bundle.min.js"></script>
+    <script
+    src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
+    integrity="sha384-8SqKZR7V8uOetpjjbcNJHvwuHpb074WS0UXjCLhzfJUqYn3B/uWx1WVv5mwRp1mV"
+    crossorigin="anonymous"
+></script>
+    <script>
+ const correctPassword = "781321";
+ 
+document.getElementById("submitButton").addEventListener("click", function() {
+    let userPassword = document.getElementById("passwordInput").value;
+    if (userPassword === correctPassword) {
+        document.getElementById("passwordContainer").style.display = "none"; // Прячем форму
+        document.getElementById("map").style.display = "block"; // Показываем карту
+        initMap(); // Загружаем карту
+    } else {
+        alert("Неверный пароль!");
+    }
+});
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView([53.9, 27.6], 7);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+        
+        
+// Основной слой карты (OSM)
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+});
+
+// Черная OSM-карта (CartoDB Dark Matter)
+const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    attribution: '© <a href="https://carto.com/">CARTO</a>'
+});
+
+// Спутниковая карта с границами (Esri World Imagery with Labels)
+const satelliteLayerWithBorders = L.layerGroup([
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }),
+    L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: 'Boundaries and labels © Esri'
+        
+    })
+    
+]);
+var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+	minZoom: 0,
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'png'
+});
+
+const googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+});
+
+googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+});
+
+googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+});
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+var OPNVKarte = L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+});
+var Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+});
+var Stadia_OSMBright = L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.{ext}', {
+	minZoom: 0,
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'png'
+});
+
+// Добавляем стандартную карту по умолчанию
+osmLayer.addTo(map);
+
+// Настройка слоев для переключения
+const baseLayers = {
+    "OSM": osmLayer,
+    "OSM Black": darkLayer,
+    "Satellite": satelliteLayerWithBorders,
+    "Google Maps": googleStreets,
+    "Google Hybrid": googleHybrid,
+    "Google Terrain": googleTerrain,
+    "OpenTopoMap": OpenTopoMap,
+    "OPNVKarte": OPNVKarte,
+    "Ersi": Esri_WorldTopoMap,
+    "Stadia White": Stadia_OSMBright,
+    "Stadia Dark": Stadia_AlidadeSmoothDark
+};
+
+// Добавляем контрол для переключения карт
+L.control.layers(baseLayers).addTo(map);
+
+// Функция для изменения фильтра на изображении
+function updateOverlayFilter() {
+    const overlay = document.querySelector('.overlay');
+    if (map.hasLayer(darkLayer)) {
+        overlay.style.filter = 'invert(1) brightness(2)';
+    } else {
+        overlay.style.filter = 'none';
+    }
+}
+
+// При добавлении или удалении слоя темной карты
+map.on('layeradd', updateOverlayFilter);
+map.on('layerremove', updateOverlayFilter);
+
+// Если карта уже загружена, сразу применим фильтр
+updateOverlayFilter();
+L.control.ruler().addTo(map);
+const provider = new window.GeoSearch.OpenStreetMapProvider();
+
+const search = new window.GeoSearch.GeoSearchControl({
+    provider: provider,
+    style: "bar",
+    showMarker: false,
+});
+
+map.addControl(search);
+
+// Исправляем центрирование
+map.on("geosearch/showlocation", async function (e) {
+    const results = await provider.search({ query: e.location.label });
+
+    if (results.length > 0) {
+        const bestMatch = results[0]; // Берём первый результат (обычно самый точный)
+        map.setView([bestMatch.y, bestMatch.x], 14); // Центрируемся
+    }
+});
+
+
+        let currentObjectId = 9500;
+        let deleteMode = false;
+        const markers = [];
+
+        function calculateCourse(lat1, lng1, lat2, lng2) {
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const lat1Rad = lat1 * Math.PI / 180;
+            const lat2Rad = lat2 * Math.PI / 180;
+
+            return Math.atan2(
+                Math.sin(dLng) * Math.cos(lat2Rad),
+                Math.cos(lat1Rad) * Math.sin(lat2Rad) - 
+                Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLng)
+            );
+        }
+
+        function calculateNewPosition(lat, lng, speed, time, targetLat, targetLng) {
+            const distance = (speed / 3600) * time;
+            const earthRadius = 6371;
+            const bearing = calculateCourse(lat, lng, targetLat, targetLng);
+
+            const latRadians = (lat * Math.PI) / 180;
+            const lngRadians = (lng * Math.PI) / 180;
+
+            const newLatRadians = Math.asin(
+                Math.sin(latRadians) * Math.cos(distance / earthRadius) + 
+                Math.cos(latRadians) * Math.sin(distance / earthRadius) * Math.cos(bearing)
+            );
+
+            const newLngRadians =
+                lngRadians +
+                Math.atan2(
+                    Math.sin(bearing) * Math.sin(distance / earthRadius) * Math.cos(latRadians),
+                    Math.cos(distance / earthRadius) - Math.sin(latRadians) * Math.sin(newLatRadians)
+                );
+
+            return [
+                (newLatRadians * 180) / Math.PI,
+                (newLngRadians * 180) / Math.PI
+            ];
+        }
+        
+
+        function haversine(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = ((lat2 - lat1) * Math.PI) / 180;
+            const dLng = ((lng2 - lng1) * Math.PI) / 180;
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos((lat1 * Math.PI) / 180) *
+                Math.cos((lat2 * Math.PI) / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function generateId() {
+            return currentObjectId++;
+        }
+
+        // Show modal and handle speed input
+        function showSpeedModal(callback) {
+            const modal = document.getElementById('speedModal');
+            const modalBackground = document.getElementById('modalBackground');
+            const speedInput = document.getElementById('speedInput');
+            const submitButton = document.getElementById('speedSubmit');
+            const closeButton = document.getElementById('speedClose');
+            
+            modal.classList.add('show');
+            modalBackground.style.display = 'none';
+
+            submitButton.onclick = () => {
+                const speed = parseFloat(speedInput.value);
+                if (!isNaN(speed)) {
+                    callback(speed);
+                    closeModal();
+                } else {
+                    alert('Некорректная скорость!');
+                }
+            };
+
+            closeButton.onclick = closeModal;
+
+            function closeModal() {
+                modal.classList.remove('show');
+                modalBackground.style.display = 'none';
+                closeModal = ""
+            }
+
+            modal.classList.add('show');
+            modalBackground.style.display = 'none';
+        }
+
+        // Show modal and handle target input
+        function showTargetModal(callback) {
+            const modal = document.getElementById('targetModal');
+            const modalBackground = document.getElementById('modalBackground');
+            const targetInput = document.getElementById('targetInput');
+            const submitButton = document.getElementById('targetSubmit');
+            const closeButton = document.getElementById('targetClose');
+            
+            modal.classList.add('show');
+            modalBackground.style.display = 'block';
+
+            submitButton.onclick = () => {
+                const [targetLat, targetLng] = targetInput.value.split(',').map(coord => parseFloat(coord));
+                if (!isNaN(targetLat) && !isNaN(targetLng)) {
+                    callback(targetLat, targetLng);
+                    closeModal();
+                } else {
+                    alert('Некорректные координаты цели!');
+                }
+            };
+
+            closeButton.onclick = closeModal;
+
+            function closeModal() {
+                modal.classList.remove('show');
+                modalBackground.style.display = 'none';
+            }
+        }
+
+        map.on('click', (e) => {
+            if (deleteMode) return;
+
+            const { lat, lng } = e.latlng;
+
+            // Get speed input via modal
+            showSpeedModal((speed) => {
+                // Get target input via modal
+                showTargetModal((targetLat, targetLng) => {
+
+            const objectId = generateId();
+            let iconUrl;
+            let iconClass = 'red-id';
+            let shiftedClass = ''
+            let shiftedClasss = ''
+// Объект, который связывает iconUrl с названиями объектов
+const objectNames = {
+    'supercam.png': 'Supercam',
+    'shahed.png': 'Shahed',
+    'iskander.png': 'Iskander',
+    'kalibr.png': 'Kalibr',
+    'x101.png': 'X-101',
+    'kab.png': 'Kab',
+    'Tsirkon.png': 'Tsirkon',
+    'Kinzhal.png': 'Kinzhal',
+    'neyst tip.png': 'Unknown'
+};
+
+
+            // Условия для выбора иконки в зависимости от скорости
+            if (speed >= 120 && speed <= 121) {
+                iconUrl = 'supercam.png';
+            } else if (speed > 120 && speed <= 170) {
+                iconUrl = 'shahed.png';
+            } else if (speed >= 7559 && speed < 7560) {
+                iconUrl = 'iskander.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 950 && speed <= 951) {
+                iconUrl = 'kalibr.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 1000 && speed <= 1001) {
+                iconUrl = 'x101.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 898 && speed <= 899) {
+                iconUrl = 'kab.png';
+            } else if (speed >= 11024 && speed <= 11025) {
+                shiftedClass = 'shifted-info-container';
+                iconUrl = 'Tsirkon.png';
+            } else if (speed >= 14687 && speed <= 14688) {
+                shiftedClass = 'shifted-info-container';
+                iconUrl = 'Kinzhal.png';
+            } else if (speed >= 4899 && speed <= 4900) {
+                shiftedClass = 'shifted-info-container';
+                iconUrl = 'Kh-22.png';
+            } else if (speed >= 1049 && speed <= 1050) {
+                shiftedClass = 'shifted-info-container';
+                iconUrl = 'Kh-59.png';
+            } else if (speed >= 80 && speed <= 85) {
+                iconUrl = 'parodia.png';
+            } else if (speed >= 290 && speed <= 291) {
+                iconUrl = 'Lancet.png';
+            } else if (speed >= 98 && speed <= 99) {
+                iconUrl = 'gerbera.png';
+            } else if (speed >= 100 && speed <= 101) {
+                iconUrl = 'ZZala.png';
+            } else if (speed >= 4500 && speed <= 4501) {
+                iconUrl = 'grumble.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 1030 && speed <= 1031) {
+                shiftedClass = 'shifted-info-container';
+                iconUrl = 'kh-69.png';
+            } else if (speed >= 109 && speed <= 110) {
+                iconUrl = 'orlan.png';
+            } else if (speed >= 5400 && speed <= 5401) {
+                iconUrl = 'atacms.png';
+                shiftedClass = 'shifted-info-container';
+                iconClass = 'blue-id'; // Синий ID для ATACMS
+                lineColor = '#006aff';  // Set blue line color for blue objects
+            } else if (speed >= 959 && speed <= 960) {
+                iconUrl = 'storm-shadow.png';
+                shiftedClass = 'shifted-info-container';
+                iconClass = 'blue-id';
+                lineColor = '#006aff';  // Set blue line color for blue objects
+            } else if (speed >= 190 && speed <= 191) {
+                iconUrl = 'lutiy.png';
+                iconClass = 'blue-id';
+                lineColor = '#006aff';  // Set blue line color for blue objects
+            } else if (speed >= 200 && speed <= 201) {
+                iconUrl = 'beaver.png';
+                iconClass = 'blue-id';
+                lineColor = '#006aff';  // Set blue line color for blue objects
+            } else if (speed >= 329 && speed <= 330) {
+                iconUrl = 'rys`.png';
+                iconClass = 'blue-id';
+                lineColor = '#006aff';  // Set blue line color for blue objects
+            } else if (speed >= 74 && speed <= 75) {
+                iconUrl = 'Molnia.png';
+            } else if (speed >= 3000 && speed <= 3001) {
+                iconUrl = 'gmlrs.png';
+                shiftedClass = 'shifted-info-container';
+                iconClass = 'blue-id';
+            } else if (speed >= 900 && speed <= 901) {
+                iconUrl = 'iskanderk.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 2519 && speed <= 2520) {
+                iconUrl = 'kh31.png';
+                shiftedClass = 'shifted-info-container';
+            } else if (speed >= 1100 && speed <= 1101) {
+                iconUrl = 'su-24.png';
+                iconClass = 'blue-id';
+            } else if (speed >= 1002 && speed <= 1003) {
+                iconUrl = 'f-16.png';
+                iconClass = 'blue-id';
+            } else if (speed >= 1200 && speed <= 1201) {
+                iconUrl = 'su-34.png';
+            } else if (speed >= 1600 && speed <= 1600) {
+                iconUrl = 'su-57.png';
+            } else if (speed >= 1200 && speed <= 1201) {
+                iconUrl = 'su-30.png';
+            } else if (speed >= 1202 && speed <= 1203) {
+                iconUrl = 'su-30 BLR.png';
+                iconClass = 'blue-id';  
+            } else if (speed >= 1400 && speed <= 1401) {
+                iconUrl = 'su-35.png';
+            } else if (speed >= 2300 && speed <= 2301) {
+                iconUrl = 'tu-22m3.png';
+            } else if (speed >= 1110 && speed <= 1111) {
+                iconUrl = 'mirage.png';
+                iconClass = 'blue-id';  
+            } else {
+                iconUrl = 'neyst tip.png';
+            }
+
+            const iconHtml = `
+    <div class="icon-container ${iconClass}">
+        <img src="${iconUrl}" class="icon" />
+         <div class="info-container ${shiftedClass} ${shiftedClasss}">
+            <span class="label-container ${iconClass}">${objectId}р.</span>
+             <span class="r-container ${iconClass}">ПП</span>
+            <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
+        </div>
+    </div>
+`;
+
+
+                    const icon = L.divIcon({
+                        className: 'icon',
+                        html: iconHtml,
+                        iconSize: [30, 30],
+                        iconAnchor: [20, 20],
+                    });
+
+                    const marker = L.marker([lat, lng], { icon }).addTo(map);
+
+// Используем более сложный HTML-контент для всплывающего окна
+const customPopupContent = `
+    <div class="custom-popup">
+        <p><strong>Скорость:</strong> ${speed} км/ч</p>
+    </div>
+`;
+
+// Привязываем кастомизированное всплывающее окно
+marker.bindPopup(customPopupContent);
+
+// Слушаем клик для открытия окна
+marker.on('click', function() {
+    marker.openPopup();
+});
+
+
+
+
+                    // marker.objectId = objectId;
+                    markers.push(marker);
+
+                    const course = calculateCourse(lat, lng, targetLat, targetLng) * (180 / Math.PI);
+                    const angle = (course + 360) % 360;
+                    marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
+
+                   let startTime = null;
+
+function updatePosition(timestamp) {                                                                                    
+    if (!startTime) startTime = timestamp;
+    const elapsedTime = (timestamp - startTime) / 1000; // время в секундах
+
+    const [newLat, newLng] = calculateNewPosition(lat, lng, speed, elapsedTime, targetLat, targetLng);
+    marker.setLatLng([newLat, newLng]);
+
+    if (haversine(newLat, newLng, targetLat, targetLng) > 1) {
+        requestAnimationFrame(updatePosition);
+    } else {
+        marker.remove(); // Удалить маркер, если цель достигнута
+    }
+}
+
+requestAnimationFrame(updatePosition);
+
+
+                    marker.on('click', function () {
+        if (deleteMode) {
+            if (confirm('Удалить этот объект?')) {
+                // Скрываем маркер, а не удаляем его
+                marker.remove();
+                // или marker.setVisible(false); // Для других библиотек
+
+                deleteMode = false;
+                const deleteButton = document.getElementById('deleteButton');
+                deleteButton.style.backgroundColor = 'red';
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Удалить объект';
+            }
+        }
+    });
+
+                });
+            });
+        });
+
+       document.getElementById('deleteButton').onclick = function () {
+    deleteMode = !deleteMode;
+    
+    // Изменяем только текст и состояние, оставляем стили без изменений
+    if (deleteMode) {
+        this.style.backgroundColor = 'green';
+        this.innerHTML = '<i class="fas fa-check"></i> Выход из режима удаления'; // Изменяем только текст
+    } else {
+        this.style.backgroundColor = 'red';
+        this.innerHTML = '<i class="fas fa-trash-alt"></i> Удалить объект'; // Изменяем только текст
+    }
+};
+
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = '';
+        });
+        // РЛС для объектов
+        const rlsOptions = [
+    "59H6-E",
+    "Родник",
+    "Роса-РБ-М",
+    "Восток-3D",
+    "5Н84А",
+    "19Ж6М"
+]; // Исключаем "Волга" из общего списка
+
+// Функция для выбора РЛС
+function getRlsForObject(objectId, iconUrl) {
+    // Уникальные РЛС для Iskander-M, Tsircon, Kinzhal, Atacms
+    const specialRls = ["iskander.png", "Tsirkon.png", "Kinzhal.png", "atacms.png"];
+    let rls = "Волга"; // по умолчанию для специальных объектов
+
+    if (specialRls.includes(iconUrl)) {
+        return rls; // Возвращаем "Волга" только для специальных объектов
+    } else {
+        // Для остальных объектов выбираем случайную РЛС, исключая "Волга"
+        const randomIndex = Math.floor(Math.random() * rlsOptions.length);
+        return rlsOptions[randomIndex];
+    }
+}
+map.on('contextmenu', function (e) {
+    const coords = `${e.latlng.lat}, ${e.latlng.lng}`;
+    navigator.clipboard.writeText(coords).then(() => {
+        alert(`Координаты скопированы: ${coords}`);
+    }).catch(err => {
+        console.error('Ошибка копирования координат:', err);
+    });
+});
+fetch("front.json")
+  .then(response => response.json())
+  .then(data => {
+    L.geoJSON(data, {
+      style: function(feature) {
+        let color = '#bdbdbd'; // По умолчанию цвет "неизвестно"
+        let opacity = 1; // По умолчанию непрозрачность для "неизвестно"
+        let fillOpacity = 1; // По умолчанию заливка непрозрачная
+
+        if (feature.properties.name === 'Освобождено') {
+          color = '#0f9d58'
+          opacity = 0.0; // Прозрачность границы
+          fillOpacity = 0.15; // Прозрачность заливки
+        } else if (feature.properties.name === 'Оккупировано') {
+          color = '#a52714'; // Цвет для "Оккупировано"
+          opacity = 0.0
+          fillOpacity = 0.25// Заливка полупрозрачная
+        } else if (feature.properties.name === 'Неизвестно') {
+          color = '#bdbdbd'; // Цвет для "Неизвестно"
+          opacity = 0.1; // Прозрачность границы
+          fillOpacity = 0.1; // Прозрачность заливки
+        }
+
+        // Возвращаем стиль с прозрачностью
+        return {
+          color: color,
+          weight: 2,
+          opacity: opacity,
+          fillColor: color,
+          fillOpacity: fillOpacity
+        };
+      }
+    }).addTo(map);
+  })
+  .catch(error => console.error("Ошибка загрузки JSON:", error));
+
+  let polygons = {};
+        let menuVisible = false;
+
+        fetch('trevoga.json')
+            .then(response => response.json())
+            .then(geojsonData => {
+                let regions = {};
+                geojsonData.features.forEach(feature => {
+                    let name = feature.properties.name;
+                    regions[name] = feature;
+                });
+
+                document.querySelectorAll('#alert-menu input[type=checkbox]').forEach(checkbox => {
+                    checkbox.onchange = function() {
+                        let region = checkbox.id;
+                        if (checkbox.checked && regions[region]) {
+                            let layer = L.geoJSON(regions[region], {
+                                style: { color: 'red', fillColor: 'red', fillOpacity: 0.07, weight: 0.5 }
+                            }).addTo(map);
+                            polygons[region] = layer;
+                        } else if (polygons[region]) {
+                            map.removeLayer(polygons[region]);
+                            delete polygons[region];
+                        }
+                    };
+                });
+            });
+
+        document.getElementById('alert-button').onclick = function() {
+            menuVisible = !menuVisible;
+            document.getElementById('alert-menu').style.display = menuVisible ? 'block' : 'none';
+        };
+    </script>
+</body>
+</html>
