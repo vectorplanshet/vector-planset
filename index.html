@@ -426,7 +426,7 @@
     crossorigin="anonymous"
 ></script>
     <script>
- const correctPassword = "лодыжка";
+ const correctPassword = "1239321";
 document.getElementById("submitButton").addEventListener("click", function() {
     let userPassword = document.getElementById("passwordInput").value;
     if (userPassword === correctPassword) {
@@ -709,19 +709,6 @@ map.on("geosearch/showlocation", async function (e) {
             let iconClass = 'red-id';
             let shiftedClass = ''
             let shiftedClasss = ''
-// Объект, который связывает iconUrl с названиями объектов
-const objectNames = {
-    'supercam.png': 'Supercam',
-    'shahed.png': 'Shahed',
-    'iskander.png': 'Iskander',
-    'kalibr.png': 'Kalibr',
-    'x101.png': 'X-101',
-    'kab.png': 'Kab',
-    'Tsirkon.png': 'Tsirkon',
-    'Kinzhal.png': 'Kinzhal',
-    'neyst tip.png': 'Unknown'
-};
-
 
             // Условия для выбора иконки в зависимости от скорости
             if (speed >= 120 && speed <= 121) {
@@ -848,10 +835,60 @@ const objectNames = {
 
                     const marker = L.marker([lat, lng], { icon }).addTo(map);
 
-// Используем более сложный HTML-контент для всплывающего окна
+// Сопоставление английских названий с русскими
+const translations = {
+    "supercam": "Supercam",
+    "shahed": "Shahed",
+    "iskander": "Искандер-М",
+    "kalibr": "Калибр",
+    "x101": "Х-101",
+    "kab": "КАБ",
+    "Tsirkon": "Циркон",
+    "Kinzhal": "Кинжал",
+    "Kh-22": "Х-22",
+    "Kh-59": "Х-59",
+    "parodia": "Пародия",
+    "Lancet": "Ланцет",
+    "gerbera": "Гербера",
+    "ZZala": "Зала",
+    "grumble": "ЗУР",
+    "kh-69": "Х-69",
+    "orlan": "Орлан",
+    "atacms": "ATACMS",
+    "storm-shadow": "Storm Shadow",
+    "lutiy": "Лютый",
+    "beaver": "Бобёр",
+    "rys`": "Рысь",
+    "Molnia": "Молния",
+    "gmlrs": "GMLRS",
+    "iskanderk": "Искандер-К",
+    "kh31": "Х-31",
+    "su-24": "Су-24",
+    "f-16": "F-16",
+    "Su-34": "Су-34",
+    "Su-57": "Су-57",
+    "su-30": "Су-30",
+    "Su-30 BLR": "Су-30 (Беларусь)",
+    "Su-35": "Су-35",
+    "Tu-22M3": "Ту-22М3",
+    "mirage": "Mirage-2000",
+    "neyst tip": "Неизвестный тип"
+};
+
+// Получаем название объекта без ".png"
+let objectKey = iconUrl.replace('.png', '').replace(/-/g, ' ');
+
+// Переводим название, если оно есть в словаре, иначе оставляем как есть
+let objectType = translations[objectKey] || objectKey;
+
+// Приводим к нормальному регистру (каждое слово с большой буквы)
+objectType = objectType.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+// Формируем содержимое popup
 const customPopupContent = `
     <div class="custom-popup">
-        <p><strong>Скорость:</strong> ${speed} км/ч</p>
+        <p><strong>ЦЕЛЬ (2111):</strong> ${objectType}</p>
+        <p><strong>СКОРОСТЬ (2818):</strong> ${speed} КМ/Ч</p>
     </div>
 `;
 
