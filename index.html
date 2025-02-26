@@ -513,6 +513,7 @@ var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/a
 const googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
+        
 });
 
 googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
@@ -865,7 +866,23 @@ map.on("geosearch/showlocation", async function (e) {
     } else if (speed >= 2300 && speed <= 2301) {
         iconUrl = 'Tu-22M3.png';
     } else if (speed >= 952 && speed <= 953) {
-        iconUrl = 'Su25.png';
+         iconUrl = 'Su25.png';
+    } else if (speed >= 954 && speed <= 955) {
+        iconUrl = 'Su25 BLR.png';
+        iconClass = 'blue-id';  
+    } else if (speed >= 850 && speed <= 851) {
+        iconUrl = 'mig-29 BLR.png';
+        iconClass = 'blue-id';  
+    } else if (speed >= 961 && speed <= 962) {
+         iconUrl = 'kh-35.png';
+         shiftedClass = 'shifted-info-container';
+    } else if (speed >= 3180 && speed <= 3181) {
+        iconUrl = 'oniks.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 500 && speed <= 501) {
+        iconUrl = 'shahed 238.png';
+    } else if (speed >= 2400 && speed <= 2450) {
+        iconUrl = 'mig-31.png';
     } else if (speed >= 1110 && speed <= 1111) {
         iconUrl = 'mirage.png';
         iconClass = 'blue-id';  
