@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure/3.1.0/leaflet-measure.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch/dist/geosearch.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script
     src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
     integrity="sha384-8SqKZR7V8uOetpjjbcNJHvwuHpb074WS0UXjCLhzfJUqYn3B/uWx1WVv5mwRp1mV"
@@ -145,25 +148,54 @@
             margin-left: 25px;
         }
         .info-container {
-            line-height: 18px;
+            line-height: 16.5px;
         }
         .label-container {
             font-size: 14px;
-            font-weight: bold;
-
+            font-weight: 600;
+                    font-family: 'Roboto', sans-serif;
+ 
             -webkit-text-stroke-color: black;
         }
         .r-container {
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+ 
         }
-        .rls-container {
+        .rls1-container {
             font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+ 
             display: flex;
     flex-direction: column;
     justify-content: center;
-
+    font-weight: 600;
+   }
+        .rls-container {
+            font-size: 14px;
+            display: flex;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+    flex-direction: column;
+    justify-content: center;
+   }
+   .info-container {
+            line-height: 16,5px;
         }
+        .label1-container {
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 600;
+            -webkit-text-stroke-color: black;
+        }
+        .r1-container {
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Roboto', sans-serif;
+ 
+        }
+
         /* Delete Button */
         #deleteButton {
             position: absolute;
@@ -196,7 +228,7 @@
         .icon-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-size: 14px;
     position: absolute;
     white-space: nowrap; /* Убираем перенос текста */
@@ -426,7 +458,7 @@
     crossorigin="anonymous"
 ></script>
     <script>
- const correctPassword = "11611488";
+ const correctPassword = "";
 document.getElementById("submitButton").addEventListener("click", function() {
     let userPassword = document.getElementById("passwordInput").value;
     if (userPassword === correctPassword) {
@@ -710,124 +742,150 @@ map.on("geosearch/showlocation", async function (e) {
             let shiftedClass = ''
             let shiftedClasss = ''
 
-            // Условия для выбора иконки в зависимости от скорости
-            if (speed >= 120 && speed <= 121) {
-                iconUrl = 'supercam.png';
-            } else if (speed > 120 && speed <= 170) {
-                iconUrl = 'shahed.png';
-            } else if (speed >= 7559 && speed < 7560) {
-                iconUrl = 'iskander.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 950 && speed <= 951) {
-                iconUrl = 'kalibr.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 1000 && speed <= 1001) {
-                iconUrl = 'x101.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 898 && speed <= 899) {
-                iconUrl = 'kab.png';
-            } else if (speed >= 11024 && speed <= 11025) {
-                shiftedClass = 'shifted-info-container';
-                iconUrl = 'Tsirkon.png';
-            } else if (speed >= 14687 && speed <= 14688) {
-                shiftedClass = 'shifted-info-container';
-                iconUrl = 'Kinzhal.png';
-            } else if (speed >= 4899 && speed <= 4900) {
-                shiftedClass = 'shifted-info-container';
-                iconUrl = 'Kh-22.png';
-            } else if (speed >= 1049 && speed <= 1050) {
-                shiftedClass = 'shifted-info-container';
-                iconUrl = 'Kh-59.png';
-            } else if (speed >= 80 && speed <= 85) {
-                iconUrl = 'parodia.png';
-            } else if (speed >= 290 && speed <= 291) {
-                iconUrl = 'Lancet.png';
-            } else if (speed >= 98 && speed <= 99) {
-                iconUrl = 'gerbera.png';
-            } else if (speed >= 100 && speed <= 101) {
-                iconUrl = 'ZZala.png';
-            } else if (speed >= 4500 && speed <= 4501) {
-                iconUrl = 'grumble.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 1030 && speed <= 1031) {
-                shiftedClass = 'shifted-info-container';
-                iconUrl = 'kh-69.png';
-            } else if (speed >= 109 && speed <= 110) {
-                iconUrl = 'orlan.png';
-            } else if (speed >= 5400 && speed <= 5401) {
-                iconUrl = 'atacms.png';
-                shiftedClass = 'shifted-info-container';
-                iconClass = 'blue-id'; // Синий ID для ATACMS
-                lineColor = '#006aff';  // Set blue line color for blue objects
-            } else if (speed >= 959 && speed <= 960) {
-                iconUrl = 'storm-shadow.png';
-                shiftedClass = 'shifted-info-container';
-                iconClass = 'blue-id';
-                lineColor = '#006aff';  // Set blue line color for blue objects
-            } else if (speed >= 190 && speed <= 191) {
-                iconUrl = 'lutiy.png';
-                iconClass = 'blue-id';
-                lineColor = '#006aff';  // Set blue line color for blue objects
-            } else if (speed >= 200 && speed <= 201) {
-                iconUrl = 'beaver.png';
-                iconClass = 'blue-id';
-                lineColor = '#006aff';  // Set blue line color for blue objects
-            } else if (speed >= 329 && speed <= 330) {
-                iconUrl = 'rys`.png';
-                iconClass = 'blue-id';
-                lineColor = '#006aff';  // Set blue line color for blue objects
-            } else if (speed >= 74 && speed <= 75) {
-                iconUrl = 'Molnia.png';
-            } else if (speed >= 3000 && speed <= 3001) {
-                iconUrl = 'gmlrs.png';
-                shiftedClass = 'shifted-info-container';
-                iconClass = 'blue-id';
-            } else if (speed >= 900 && speed <= 901) {
-                iconUrl = 'iskanderk.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 2519 && speed <= 2520) {
-                iconUrl = 'kh31.png';
-                shiftedClass = 'shifted-info-container';
-            } else if (speed >= 1100 && speed <= 1101) {
-                iconUrl = 'su-24.png';
-            } else if (speed >= 1102 && speed <= 1103) {
-                iconUrl = 'su-24 BLR.png';
-                iconClass = 'blue-id';
-            } else if (speed >= 1002 && speed <= 1003) {
-                iconUrl = 'f-16.png';
-                iconClass = 'blue-id';
-            } else if (speed >= 1200 && speed <= 1201) {
-                iconUrl = 'Su-34.png';
-            } else if (speed >= 1600 && speed <= 1601){
-                iconUrl = 'Su-57.png';
-            } else if (speed >= 1204 && speed <= 1205) {
-                iconUrl = 'Su-30.png';
-            } else if (speed >= 1202 && speed <= 1203) {
-                iconUrl = 'Su-30 BLR.png';
-                iconClass = 'blue-id';  
-            } else if (speed >= 1400 && speed <= 1401) {
-                iconUrl = 'Su-35.png';
-            } else if (speed >= 2300 && speed <= 2301) {
-                iconUrl = 'Tu-22M3.png';
-            } else if (speed >= 952 && speed <= 953) {
-                iconUrl = 'Su25.png';
-            } else if (speed >= 1110 && speed <= 1111) {
-                iconUrl = 'mirage.png';
-                iconClass = 'blue-id';  
-            } else {
-                iconUrl = 'neyst tip.png';
-            }
+            if (speed === 0) {  
+    // Если скорость 0, сразу устанавливаем иконку EPVO
+    iconUrl = 'EPVO.png'; 
+    iconClass = 'blue-id';  
 
-            const iconHtml = `
-    <div class="icon-container ${iconClass}">
-        <img src="${iconUrl}" class="icon" />
-         <div class="info-container ${shiftedClass} ${shiftedClasss}">
-            <span class="label-container ${iconClass}">${objectId}р.</span>
-             <span class="r-container ${iconClass}">ПП</span>
-            <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
+    // Генерируем ID от 500000 и время по Минску
+    const objectId1 = getNextObjectId(); 
+    const kievTime = getKievTime();
+
+    // Меняем iconHtml ПОЛНОСТЬЮ
+    iconHtml = `
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+            <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="label1-container ${iconClass}">${objectId} ${kievTime}</span>
+                <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="r1-container ${iconClass}">ЕПВО</span>
+                <span class="rls1-container ${iconClass}">${objectId1}</span>
+            </div>
+                        </div>
         </div>
-    </div>
-`;
+    `;
+} else {
+    // Условия для выбора иконки в зависимости от скорости
+    if (speed >= 120 && speed <= 121) {
+        iconUrl = 'supercam.png';
+    } else if (speed > 120 && speed <= 170) {
+        iconUrl = 'shahed.png';
+    } else if (speed >= 7559 && speed < 7560) {
+        iconUrl = 'iskander.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 950 && speed <= 951) {
+        iconUrl = 'kalibr.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 1000 && speed <= 1001) {
+        iconUrl = 'x101.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 898 && speed <= 899) {
+        iconUrl = 'kab.png';
+    } else if (speed >= 11024 && speed <= 11025) {
+        shiftedClass = 'shifted-info-container';
+        iconUrl = 'Tsirkon.png';
+    } else if (speed >= 14687 && speed <= 14688) {
+        shiftedClass = 'shifted-info-container';
+        iconUrl = 'Kinzhal.png';
+    } else if (speed >= 4899 && speed <= 4900) {
+        shiftedClass = 'shifted-info-container';
+        iconUrl = 'Kh-22.png';
+    } else if (speed >= 1049 && speed <= 1050) {
+        shiftedClass = 'shifted-info-container';
+        iconUrl = 'Kh-59.png';
+    } else if (speed >= 80 && speed <= 85) {
+        iconUrl = 'parodia.png';
+    } else if (speed >= 290 && speed <= 291) {
+        iconUrl = 'Lancet.png';
+    } else if (speed >= 98 && speed <= 99) {
+        iconUrl = 'gerbera.png';
+    } else if (speed >= 100 && speed <= 101) {
+        iconUrl = 'ZZala.png';
+    } else if (speed >= 4500 && speed <= 4501) {
+        iconUrl = 'grumble.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 1030 && speed <= 1031) {
+        shiftedClass = 'shifted-info-container';
+        iconUrl = 'kh-69.png';
+    } else if (speed >= 109 && speed <= 110) {
+        iconUrl = 'orlan.png';
+    } else if (speed >= 5400 && speed <= 5401) {
+        iconUrl = 'atacms.png';
+        shiftedClass = 'shifted-info-container';
+        iconClass = 'blue-id'; // Синий ID для ATACMS
+        lineColor = '#006aff';  // Set blue line color for blue objects
+    } else if (speed >= 959 && speed <= 960) {
+        iconUrl = 'storm-shadow.png';
+        shiftedClass = 'shifted-info-container';
+        iconClass = 'blue-id';
+        lineColor = '#006aff';  // Set blue line color for blue objects
+    } else if (speed >= 190 && speed <= 191) {
+        iconUrl = 'lutiy.png';
+        iconClass = 'blue-id';
+        lineColor = '#006aff';  // Set blue line color for blue objects
+    } else if (speed >= 200 && speed <= 201) {
+        iconUrl = 'beaver.png';
+        iconClass = 'blue-id';
+        lineColor = '#006aff';  // Set blue line color for blue objects
+    } else if (speed >= 329 && speed <= 330) {
+        iconUrl = 'rys`.png';
+        iconClass = 'blue-id';
+        lineColor = '#006aff';  // Set blue line color for blue objects
+    } else if (speed >= 74 && speed <= 75) {
+        iconUrl = 'Molnia.png';
+    } else if (speed >= 3000 && speed <= 3001) {
+        iconUrl = 'gmlrs.png';
+        shiftedClass = 'shifted-info-container';
+        iconClass = 'blue-id';
+    } else if (speed >= 900 && speed <= 901) {
+        iconUrl = 'iskanderk.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 2519 && speed <= 2520) {
+        iconUrl = 'kh31.png';
+        shiftedClass = 'shifted-info-container';
+    } else if (speed >= 1100 && speed <= 1101) {
+        iconUrl = 'su-24.png';
+    } else if (speed >= 1102 && speed <= 1103) {
+        iconUrl = 'su-24 BLR.png';
+        iconClass = 'blue-id';
+    } else if (speed >= 1002 && speed <= 1003) {
+        iconUrl = 'f-16.png';
+        iconClass = 'blue-id';
+    } else if (speed >= 1200 && speed <= 1201) {
+        iconUrl = 'Su-34.png';
+    } else if (speed >= 1600 && speed <= 1601) {
+        iconUrl = 'Su-57.png';
+    } else if (speed >= 1204 && speed <= 1205) {
+        iconUrl = 'Su-30.png';
+    } else if (speed >= 1202 && speed <= 1203) {
+        iconUrl = 'Su-30 BLR.png';
+        iconClass = 'blue-id';  
+    } else if (speed >= 1400 && speed <= 1401) {
+        iconUrl = 'Su-35.png';
+    } else if (speed >= 2300 && speed <= 2301) {
+        iconUrl = 'Tu-22M3.png';
+    } else if (speed >= 952 && speed <= 953) {
+        iconUrl = 'Su25.png';
+    } else if (speed >= 1110 && speed <= 1111) {
+        iconUrl = 'mirage.png';
+        iconClass = 'blue-id';  
+    } else {
+        // Если скорость не попала ни в одно условие, ставим "neyst tip.png"
+        iconUrl = 'neyst tip.png';
+    }
+
+    // Основной шаблон для всех остальных случаев
+    iconHtml = `
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+             <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="label-container ${iconClass}">${objectId}р.</span>
+                 <span class="r-container ${iconClass}">ПП</span>
+                <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
+            </div>
+        </div>
+    `;
+}
 
 
                     const icon = L.divIcon({
@@ -909,13 +967,20 @@ marker.on('click', function() {
 
 
                     // marker.objectId = objectId;
-                    markers.push(marker);
+markers.push(marker);
 
-                    const course = calculateCourse(lat, lng, targetLat, targetLng) * (180 / Math.PI);
-                    const angle = (course + 360) % 360;
-                    marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
+// Проверяем, если скорость больше 0, то поворачиваем иконку
+if (speed > 0) {
+    const course = calculateCourse(lat, lng, targetLat, targetLng) * (180 / Math.PI);
+    const angle = (course + 360) % 360;
+    marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
+} else {
+    // Если скорость 0, не вращаем иконку (сбрасываем поворот)
+    marker._icon.querySelector('.icon').style.transform = `rotate(0deg)`;
+}
 
-                   let startTime = null;
+let startTime = null;
+
 
 function updatePosition(timestamp) {                                                                                    
     if (!startTime) startTime = timestamp;
@@ -1071,6 +1136,33 @@ fetch("front.json")
             menuVisible = !menuVisible;
             document.getElementById('alert-menu').style.display = menuVisible ? 'block' : 'none';
         };
+        function getKievTime() {
+    const options = {
+        timeZone: 'Europe/Kiev',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // 24-часовой формат
+    };
+    return new Intl.DateTimeFormat('ru-RU', options).format(new Date());
+}
+
+let objectIdCounter = 564100;
+
+function getNextObjectId() {
+    return objectIdCounter++;
+
+
+    const iconHTML = `
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+            <div class="info-container ${shiftedClass}">
+                <span class="label-container ${iconClass}">${objectId} ${minskTime}</span>
+                <span class="r-container ${iconClass}">ЕПВО</span>
+            </div>
+        </div>
+    `;
+    return iconHTML;
+}
 
     </script>
 </body>
