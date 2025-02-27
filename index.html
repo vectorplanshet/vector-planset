@@ -765,6 +765,9 @@ map.on("geosearch/showlocation", async function (e) {
                         </div>
         </div>
     `;
+    setTimeout(() => {
+        marker.remove();
+    }, 1200000);
 } else {
     // Условия для выбора иконки в зависимости от скорости
     if (speed >= 120 && speed <= 121) {
