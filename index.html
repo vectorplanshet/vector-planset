@@ -114,7 +114,7 @@
         }
     
         .red-id {
-            color: red;
+            color: rgb(241, 0, 0);
         }
         .blue-id {
             color: #006aff;
@@ -126,7 +126,7 @@
 .red-id .r-container,
 .red-id .rls-container 
 .red-id .icon-container {
-    color: red;
+    color: rgb(241, 0, 0);
 }
 
 .blue-id .label-container,
@@ -152,14 +152,14 @@
         }
         .label-container {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
                     font-family: 'Roboto', sans-serif;
  
             -webkit-text-stroke-color: black;
         }
         .r-container {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             font-family: 'Roboto', sans-serif;
  
         }
@@ -170,13 +170,13 @@
             display: flex;
     flex-direction: column;
     justify-content: center;
-    font-weight: 600;
+    font-weight: 500;
    }
         .rls-container {
             font-size: 14px;
             display: flex;
             font-family: 'Roboto', sans-serif;
-            font-weight: 600;
+            font-weight: 500;
     flex-direction: column;
     justify-content: center;
    }
@@ -186,12 +186,12 @@
         .label1-container {
             font-size: 14px;
             font-family: 'Roboto', sans-serif;
-            font-weight: 600;
+            font-weight: 500;
             -webkit-text-stroke-color: black;
         }
         .r1-container {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             font-family: 'Roboto', sans-serif;
  
         }
@@ -901,7 +901,7 @@ map.on("geosearch/showlocation", async function (e) {
         <div class="icon-container ${iconClass}">
             <img src="${iconUrl}" class="icon" />
              <div class="info-container ${shiftedClass} ${shiftedClasss}">
-                <span class="label-container ${iconClass}">${objectId}р.</span>
+                <span class="label-container ${iconClass}">${objectId}р</span>
                  <span class="r-container ${iconClass}">ПП</span>
                 <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
             </div>
