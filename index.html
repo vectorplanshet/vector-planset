@@ -581,27 +581,6 @@ map.on('layerremove', updateOverlayFilter);
 
 // Если карта уже загружена, сразу применим фильтр
 updateOverlayFilter();
-L.control.ruler().addTo(map);
-const provider = new window.GeoSearch.OpenStreetMapProvider();
-
-const search = new window.GeoSearch.GeoSearchControl({
-    provider: provider,
-    style: "bar",
-    showMarker: false,
-});
-
-map.addControl(search);
-
-// Исправляем центрирование
-map.on("geosearch/showlocation", async function (e) {
-    const results = await provider.search({ query: e.location.label });
-
-    if (results.length > 0) {
-        const bestMatch = results[0]; // Берём первый результат (обычно самый точный)
-        map.setView([bestMatch.y, bestMatch.x], 14); // Центрируемся
-    }
-});
-
 
         let currentObjectId = 9500;
         let deleteMode = false;
