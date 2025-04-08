@@ -38,73 +38,84 @@
     width: 100%;
 }
 
-        /* Modal Background */
-        .modal-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            display: none;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #f7f7f7, #e0e0e0);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-            max-width: 450px;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-        .modal h2 {
-            font-size: 24px;
-            color: #333;
-            font-family: 'Roboto', sans-serif;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            font-size: 14px;
-            margin-top: 10px;
-            border-radius: 8px;
-            border: 2px solid #ccc;
-            transition: border 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #4a90e2;
-            outline: none;
-        }
-        .modal-button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            margin-top: 20px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .modal-button:hover {
-            background-color: #357ab7;
-        }
-        .modal-button:focus {
-            outline: none;
-        }
-        .modal-close {
-            background-color: red;
-        }
+     
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(21, 24, 30, 0.85);
+    z-index: 1000;
+    display: none;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background: #252b36;
+    padding: 20px 24px;
+    border-radius: 14px;
+    z-index: 1001;
+    max-width: 360px;
+    width: 90%;
+    transition: all 0.35s ease;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.modal.show {
+    display: block;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal h2 {
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    background-color: #1e232c;
+    color: #ffffff;
+    border-radius: 8px;
+    border: 2px solid #3a4152;
+}
+
+input[type="text"]:focus {
+    border-color: #4a90e2;
+    background-color: #252b36;
+    outline: none;
+}
+
+.modal-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 20px;
+    background-color: #4674dc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-button:hover {
+    background-color: #5c90de;
+}
+
+.modal-button:focus {
+    outline: none;
+}
         /* Сдвигаем контейнер вправо для нужных объектов */
         .shifted-info-container {
             margin-left: 10px; /* Сдвиг на 20px вправо, можно менять значение */
@@ -198,20 +209,22 @@
 
         /* Delete Button */
         #deleteButton {
-            position: absolute;
-            bottom: 30px;
-            left: 10px;
-            background-color: red;
-            color: white;
-            padding: 15px 25px;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            z-index: 1003;
-        }
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    background: transparent;
+    color: white;
+    padding: 15px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    z-index: 1003;
+    text-align: left;
+    padding-left: 7px;
+}
         /* Smooth Transition for Modals */  
         .modal.show {
             display: block;
@@ -252,20 +265,33 @@
             z-index: 1000;
         }
         #alert-menu {
-            background: white;
-            padding: 15px;
-            display: none;
-            border: 2px solid #333;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            width: 200px;
-            font-family: Arial, sans-serif;
-        }
-        #alert-menu h3 {
+            background: #3a4153;
+    padding: 20px;
+    display: none; /* Изначально скрыто */
+    border: none;
+    width: 250px;
+    height: 1103px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #c4c4c4;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 50px; /* Смещаем меню вниз относительно кнопки */
+    left: 39px; /* Открывается справа от sidebar */
+    margin-left: 1px; /* Немного отступа от sidebar */
+}
+
+#alert-menu:hover {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+}
+.leaflet-control-attribution {
+    display: none !important;
+}
+#alert-menu h3 {
             margin: 0 0 10px;
             text-align: center;
             font-size: 16px;
-            color: #333;
+            color: #c4c4c4;
         }
         #alert-menu div {
             margin-bottom: 5px;
@@ -274,18 +300,17 @@
             margin-right: 5px;
         }
         button#alert-button {
-            background: #ff0800;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            width: 150px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        button#alert-button:hover {
-            background: #c9302c;
-        }
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 150px;
+    border-radius: 5px;
+    text-align: left; /* Текст слева */
+    padding-left: 7px;
+    margin-top: 50px; /* Отступ сверху, чтобы кнопка не была прямо у верхнего края */
+}
         #overlay {
     position: absolute;
     top: 0;
@@ -339,63 +364,122 @@
 
         /* Стили меню */
         #passwordContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0033cc, #0066ff); /* Градиент синего */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            color: white;
-            text-align: center;
-            z-index: 1005;
-        }
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #252b36; /* Градиент синего */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        text-align: center;
+        z-index: 1010;
+    }
 
-        #passwordContainer h1 {
-            font-size: 28px;
-            margin-bottom: 120px;
-            letter-spacing: 1px;
-        }
+    #passwordContainer img {
+        width: 250px;
+        height: 25x;
+    }
 
-        #passwordInput {
-            width: 250px;
-            padding: 12px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            text-align: center;
-            margin-bottom: 15px;
-        }
+    #loginInput, #passwordInput {
+        padding: 20px 15px;
+        font-size: 14px;
+        width: 400px;
+        height: 30px;
+        border: none;
+        border-radius: 4px;
+        background-color: #3d4558;
+        color: #fff;
+        text-align: left;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        background-size: 25px;
+    }
 
-        #submitButton {
-            padding: 12px 25px;
-            font-size: 18px;
-            background: #ffffff;
-            color: rgb(0, 0, 0);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+    #loginInput::placeholder,
+    #passwordInput::placeholder {
+        color: #b0b3b8;
+    }
+    #submitButton {
+    padding: 12px 40px; /* помягче */
+    font-size: 14px;
+    background-color: #4674dc;
+    color: white;
+    border: none;
+    cursor: pointer;    
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 0px;
+}
 
-        #submitButton:hover {
-            background: #9d9d9d;
-        }
+    #submitButton:hover {
+        background-color: #5c90de;
+    }
+
+    #submitButton:active {
+        background-color: #0033cc;
+        transform: scale(0.98);
+    }
+        #menu-icon {
+    position: absolute;
+    top: 17px;  /* Располагаем сверху */
+    left: 20px; /* Иконка будет слева */
+    width: 170px;  /* Задаем размер иконки (по желанию) */
+    height: 25px; /* Задаем размер иконки (по желанию) */
+}
+        .inputWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Расстояние между логином и паролем */
+        margin-bottom: 205px; /* Отступ вниз до кнопки */
+    }
+    #topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #2d3240; /* синий */
+    
+    z-index: 1005;
+}
+#sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px; /* Узкая боковая панель */
+    height: 100%; /* На всю высоту экрана */
+    background-color: #2d3240; /* Темный цвет для панели */
+    z-index: 1000; /* Слои, чтобы быть выше карты */
+}
+.leaflet-control-layers {
+    z-index: 2000; /* Выше, чем topbar */
+    position: relative; /* или absolute, если нужно */
+    top: 60px; /* чтобы слой не перекрывал панель */
+    background-color: #2d3240;
+    color: #c4c4c4;
+}
     </style>
 </head>
 <body>
-    <div id="passwordContainer">
-        <p>Введите пароль:</p>
-        <input type="password" id="passwordInput" placeholder="Введите пароль">
-        <button id="submitButton">Войти</button>
+    <div id="passwordContainer">    
+        <img src="iconpas.png">
+        <div class="inputWrapper">
+            <input type="text" id="loginInput" placeholder="Логин">
+            <input type="password" id="passwordInput" placeholder="Пароль">
+            <button id="submitButton">Войти в систему</button>
+        </div>
+    </div>
+    <div id="sidebar"></div>
+    <div id="leaflet-control-layers"></div>
+    <div id="topbar">
+        <img src="icon.png" alt="Icon" id="menu-icon" />
     </div>
     <div id="map"></div>
     <div class="overlay"></div>
-    <button id="deleteButton"><i class="fas fa-trash-alt"></i> Удалить объект</button>
+    <button id="deleteButton"><i class="fas fa-trash-alt"></i></button>
 <!-- Модальное окно для отображения координат -->
 <div class="modal" id="coordinatesModal">
     <h2>Координаты:</h2>
@@ -422,7 +506,7 @@
     </div>
     
     <div id="alert-container">
-        <button id="alert-button"><i class="fas fa-bell"></i> Дать тревогу</button>
+        <button id="alert-button"><i class="fas fa-bell"></i></button>
         <div id="alert-menu">
             <h3>Дать тревогу</h3>
             <div>
@@ -1009,8 +1093,7 @@ requestAnimationFrame(updatePosition);
 
                 deleteMode = false;
                 const deleteButton = document.getElementById('deleteButton');
-                deleteButton.style.backgroundColor = 'red';
-                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Удалить объект';
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
             }
         }
     });
@@ -1024,11 +1107,9 @@ requestAnimationFrame(updatePosition);
     
     // Изменяем только текст и состояние, оставляем стили без изменений
     if (deleteMode) {
-        this.style.backgroundColor = 'green';
-        this.innerHTML = '<i class="fas fa-check"></i> Выход из режима удаления'; // Изменяем только текст
+        this.innerHTML = '<i class="fas fa-check"></i>'; // Изменяем только текст
     } else {
-        this.style.backgroundColor = 'red';
-        this.innerHTML = '<i class="fas fa-trash-alt"></i> Удалить объект'; // Изменяем только текст
+        this.innerHTML = '<i class="fas fa-trash-alt"></i>'; // Изменяем только текст
     }
 };
 
