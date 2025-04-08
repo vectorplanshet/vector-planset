@@ -1167,6 +1167,10 @@ fetch("front.json")
           color = '#a52714'; // Цвет для "Оккупировано"
           opacity = 0.0
           fillOpacity = 0.25// Заливка полупрозрачная
+        } else if (feature.properties.name === 'Возвращён контроль') {
+          color = '#a52714'; // Цвет для "Оккупировано"
+          opacity = 0.0
+          fillOpacity = 0.25// Заливка полупрозрачная
         } else if (feature.properties.name === 'Неизвестно') {
           color = '#bdbdbd'; // Цвет для "Неизвестно"
           opacity = 0.1; // Прозрачность границы
