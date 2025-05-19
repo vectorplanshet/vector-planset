@@ -125,7 +125,7 @@ input[type="text"]:focus {
         }
     
         .red-id {
-            color: rgb(255, 0, 0);
+            color: #dd0347;
         }
         .blue-id {
             color: #006aff;
@@ -137,7 +137,7 @@ input[type="text"]:focus {
 .red-id .r-container,
 .red-id .rls-container 
 .red-id .icon-container {
-    color: rgb(255, 0, 0);
+            color: #dd0347;
 }
 
 .blue-id .label-container,
@@ -162,47 +162,47 @@ input[type="text"]:focus {
             line-height: 16.5px;
         }
         .label-container {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
                     font-family: 'Roboto', sans-serif;
  
             -webkit-text-stroke-color: black;
         }
         .r-container {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Roboto', sans-serif;
  
         }
         .rls1-container {
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Roboto', sans-serif;
  
             display: flex;
     flex-direction: column;
     justify-content: center;
-    font-weight: 500;
    }
         .rls-container {
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
             display: flex;
             font-family: 'Roboto', sans-serif;
-            font-weight: 500;
     flex-direction: column;
     justify-content: center;
    }
    .info-container {
-            line-height: 16,5px;
+            line-height: 14px;
         }
         .label1-container {
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Roboto', sans-serif;
-            font-weight: 500;
             -webkit-text-stroke-color: black;
         }
         .r1-container {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Roboto', sans-serif;
  
         }
@@ -965,7 +965,7 @@ updateOverlayFilter();
             <img src="${iconUrl}" class="icon" />
              <div class="info-container ${shiftedClass} ${shiftedClasss}">
                 <span class="label-container ${iconClass}">${objectId}р</span>
-                 <span class="r-container ${iconClass}">ПП</span>
+                 <span class="r-container ${iconClass}">ПП·</span>
                 <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
             </div>
         </div>
@@ -1249,6 +1249,11 @@ function getNextObjectId() {
     `;
     return iconHTML;
 }
+document.getElementById('toggleTemplateButton').addEventListener('click', () => {
+    useNewTemplate = !useNewTemplate;
+    const state = useNewTemplate ? 'Новый шаблон включен' : 'Обычный шаблон включен';
+    alert(state);
+});
 
     </script>
 </body>
