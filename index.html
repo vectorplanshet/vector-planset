@@ -805,7 +805,11 @@ updateOverlayFilter();
             let iconClass = 'red-id';
             let shiftedClass = ''
             let shiftedClasss = ''
+let objectIdCounter1 = '0620';
 
+function getNextObjectId1() {
+    return objectIdCounter1++;
+}
             if (speed === 0) {  
     // Если скорость 0, сразу устанавливаем иконку EPVO
     iconUrl = 'EPVO.png'; 
@@ -917,7 +921,7 @@ updateOverlayFilter();
         iconClass = 'blue-id';
     } else if (speed >= 1002 && speed <= 1003) {
         iconUrl = 'f-16.png';
-        iconClass = 'blue-id';
+        iconClass = 'zl';  
     } else if (speed >= 1200 && speed <= 1201) {
         iconUrl = 'Su-34.png';
     } else if (speed >= 1600 && speed <= 1601) {
@@ -953,20 +957,48 @@ updateOverlayFilter();
         iconUrl = 'a-50.png';
     } else if (speed >= 1110 && speed <= 1111) {
         iconUrl = 'mirage.png';
-        iconClass = 'blue-id';  
+        iconClass = 'zl';         
+    } else if (speed >= 1002 && speed <= 1003) {
+        iconUrl = 'f-16.png';
+        iconClass = 'zl'; 
     } else {
         // Если скорость не попала ни в одно условие, ставим "neyst tip.png"
         iconUrl = 'neyst tip.png';
     }
-
+}if (iconClass === 'blue-id') {
+    const objectId2 = getNextObjectId1(); 
+    iconUrl = 'blue.png';
+    iconHtml = `
+    <div class="icon-container ${iconClass}">
+      <img src="${iconUrl}" class="icon" />
+      <div class="info-container ${shiftedClass} ${shiftedClasss}">
+        <span class="label-container ${iconClass}">0${objectId2}р</span>
+        <span class="r-container ${iconClass}">СВ</span>
+        <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span>
+      </div>
+    </div>
+    `;
+    } else if (iconClass === 'zl') {
+    const objectId2 = getNextObjectId1(); 
+    iconUrl = 'zl.png';
+    iconHtml = `
+        <div class="icon-container ${iconClass}">
+            <img src="${iconUrl}" class="icon" />
+            <div class="info-container ${shiftedClass} ${shiftedClasss}">
+                <span class="label-container ${iconClass}">0${objectId2}р</span>
+                <span class="r-container ${iconClass}">ЗЛ</span>
+                <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span>
+            </div>
+        </div>
+    `;  
+} else {
     // Основной шаблон для всех остальных случаев
     iconHtml = `
         <div class="icon-container ${iconClass}">
             <img src="${iconUrl}" class="icon" />
              <div class="info-container ${shiftedClass} ${shiftedClasss}">
                 <span class="label-container ${iconClass}">${objectId}р</span>
-                 <span class="r-container ${iconClass}">ПП·</span>
-                <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span> <!-- РЛС -->
+                <span class="r-container ${iconClass}">ПП</span>  
             </div>
         </div>
     `;
@@ -1254,7 +1286,11 @@ document.getElementById('toggleTemplateButton').addEventListener('click', () => 
     const state = useNewTemplate ? 'Новый шаблон включен' : 'Обычный шаблон включен';
     alert(state);
 });
+let objectIdCounter1 = '0620';
 
+function getNextObjectId1() {
+    return objectIdCounter1++;
+}
     </script>
 </body>
 </html>
