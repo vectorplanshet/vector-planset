@@ -813,7 +813,6 @@ function getNextObjectId1() {
             if (speed === 0) {  
     // Если скорость 0, сразу устанавливаем иконку EPVO
     iconUrl = 'EPVO.png'; 
-    iconClass = 'blue-id';  
 
     // Генерируем ID от 500000 и время по Минску
     const objectId1 = getNextObjectId(); 
@@ -1013,8 +1012,7 @@ function getNextObjectId1() {
                         iconAnchor: [20, 20],
                     });
 
-                    const marker = L.marker([lat, lng], { icon }).addTo(map);
-                    
+                const marker = L.marker([lat, lng], { icon }).addTo(map);
 
 // Сопоставление английских названий с русскими
 const translations = {
@@ -1056,61 +1054,114 @@ const translations = {
     "neyst tip": "Неизвестный тип"
 };
 
-// Получаем название объекта без ".png"
+// Получаем название объекта
 let objectKey = iconUrl.replace('.png', '').replace(/-/g, ' ');
-
-// Переводим название, если оно есть в словаре, иначе оставляем как есть
 let objectType = translations[objectKey] || objectKey;
-
-// Приводим к нормальному регистру (каждое слово с большой буквы)
 objectType = objectType.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
-// Формируем содержимое popup
+// Инициализация переменных
+let currentLat = lat;
+let currentLng = lng;
+let targetLatVar = targetLat;
+let targetLngVar = targetLng;
+let startTime = null;
+let isActive = true;
+
+// Popup контент с кнопкой
 const customPopupContent = `
     <div class="custom-popup">
         <p><strong>ЦЕЛЬ (2111):</strong> ${objectType}</p>
         <p><strong>СКОРОСТЬ (2818):</strong> ${speed} КМ/Ч</p>
+        <button id="changeCoordsBtn">Изменить координаты</button>
     </div>
 `;
 
-// Привязываем кастомизированное всплывающее окно
 marker.bindPopup(customPopupContent);
 
-// Слушаем клик для открытия окна
-marker.on('click', function() {
-    marker.openPopup();
+// Обработчик открытия popup с кнопкой
+marker.on('popupopen', () => {
+    setTimeout(() => { // чтобы HTML точно появился в DOM
+        const popupEl = marker.getPopup().getElement();
+        if (!popupEl) return;
+
+        const btn = popupEl.querySelector('#changeCoordsBtn');
+        if (!btn) return;
+
+        btn.onclick = () => {
+            const newCoords = prompt("Введите новые координаты (lat,lng):");
+            if (!newCoords) return;
+
+            const [newLat, newLng] = newCoords.split(',').map(Number);
+            if (isNaN(newLat) || isNaN(newLng)) {
+                alert("Некорректные координаты");
+                return;
+            }
+
+            const pos = marker.getLatLng();
+            currentLat = pos.lat;
+            currentLng = pos.lng;
+
+            targetLatVar = newLat;
+            targetLngVar = newLng;
+
+            startTime = null;
+
+            if (!isActive) {
+                isActive = true;
+                requestAnimationFrame(updatePosition);
+            }
+        };
+    }, 0);
 });
 
+// Клик по маркеру для открытия popup
+marker.on('click', () => marker.openPopup());
 
-
-
-                    // marker.objectId = objectId;
-markers.push(marker);
-
-// Проверяем, если скорость больше 0, то поворачиваем иконку
-if (speed > 0) {
-    const course = calculateCourse(lat, lng, targetLat, targetLng) * (180 / Math.PI);
+// Поворот иконки с учётом скорости
+function rotateIcon(lat1, lng1, lat2, lng2, speed) {
+    if (speed === 0) {
+        marker._icon.querySelector('.icon').style.transform = `rotate(0deg)`; 
+        return;
+    }
+    const course = calculateCourse(lat1, lng1, lat2, lng2) * (180 / Math.PI);
     const angle = (course + 360) % 360;
     marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
-} else {
-    // Если скорость 0, не вращаем иконку (сбрасываем поворот)
-    marker._icon.querySelector('.icon').style.transform = `rotate(0deg)`;
 }
 
-let startTime = null;
+rotateIcon(lat, lng, targetLat, targetLng, speed);
 
+// Добавляем маркер в массив
+markers.push(marker);
 
-function updatePosition(timestamp) {                                                                                    
+// Анимация движения с линиями
+if (speed > 0) {
+    marker.trailCoords = [[lat, lng]];
+    marker.trailLine = L.polyline(marker.trailCoords, {
+        color: '#006AFE', 
+        weight: 2, 
+        opacity: 0.8
+    }).addTo(map);
+}
+
+function updatePosition(timestamp) {
     if (!startTime) startTime = timestamp;
-    const elapsedTime = (timestamp - startTime) / 1000; // время в секундах
+    const elapsedTime = (timestamp - startTime) / 1000;
 
-    const [newLat, newLng] = calculateNewPosition(lat, lng, speed, elapsedTime, targetLat, targetLng);
+    const [newLat, newLng] = calculateNewPosition(currentLat, currentLng, speed, elapsedTime, targetLatVar, targetLngVar);
     marker.setLatLng([newLat, newLng]);
+    rotateIcon(newLat, newLng, targetLatVar, targetLngVar, speed);
 
-    if (haversine(newLat, newLng, targetLat, targetLng) > 1) {
+    if (marker.trailLine) {
+        marker.trailCoords.push([newLat, newLng]);
+        marker.trailLine.setLatLngs(marker.trailCoords);
+    }
+
+    if (haversine(newLat, newLng, targetLatVar, targetLngVar) > 0.1 && isActive) {
         requestAnimationFrame(updatePosition);
     } else {
-        marker.remove(); // Удалить маркер, если цель достигнута
+        isActive = false;
+        marker.remove();
+        if (marker.trailLine) marker.trailLine.remove();
     }
 }
 
@@ -1262,7 +1313,7 @@ fetch("front.json")
         minute: '2-digit',
         hour12: false // 24-часовой формат
     };
-    return new Intl.DateTimeFormat('ru-RU', options).format(new Date());
+    return new Intl.DateTimeFormat('ru-RU', options).format(new Date()); 
 }
 
 let objectIdCounter = 564100;
