@@ -178,7 +178,7 @@ input[type="text"]:focus {
             font-size: 13px;
             font-weight: 600;
             font-family: 'Roboto', sans-serif;
- 
+             color: black;
             display: flex;
     flex-direction: column;
     justify-content: center;
@@ -199,11 +199,13 @@ input[type="text"]:focus {
             font-weight: 600;
             font-family: 'Roboto', sans-serif;
             -webkit-text-stroke-color: black;
+            color: black;
         }
         .r1-container {
             font-size: 13px;
             font-weight: 600;
             font-family: 'Roboto', sans-serif;
+                        color: black;
  
         }
 
@@ -325,18 +327,23 @@ input[type="text"]:focus {
 }
 /* Кастомизация всплывающего окна */
 .leaflet-popup-content {
-    background-color: #f0f0f0; /* Светлый фон */
-    color: #333;               /* Темный цвет текста */
-    padding: 10px;
-    border-radius: 10px;       /* Скругленные углы */
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 3px 5px;        /* Очень компактно */
+    border-radius: 4px;      /* Мягкие углы */
     font-family: 'Arial', sans-serif;
-    font-size: 14px;
+    font-size: 10px;         /* Минимальный шрифт */
+    line-height: 1.2;
+    max-width: 150px;        /* Ещё уже */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
-/* Стиль для стрелочки всплывающего окна */
 .leaflet-popup-tip {
     background-color: #f0f0f0;
+    width: 8px;
+    height: 5px;             /* Крошечная стрелочка */
 }
+
 
 /* Стиль для заголовка в окне */
 .leaflet-popup-content h3 {
@@ -344,6 +351,9 @@ input[type="text"]:focus {
     font-size: 16px;
     color: #555;
 }
+                .info-container1 {
+            line-height: 14px;
+        }
 .leaflet-control.ruler {
         position: absolute;
         bottom: 10px;
@@ -361,7 +371,20 @@ input[type="text"]:focus {
         body {
             background: #f0f0f0;
         }
-
+.icon-container1 {
+    display: flex;
+    align-items: center;
+    gap: 13px;   /* 13 / 2 */
+    font-size: 14px; /* 14 / 2 */
+    position: absolute;
+    white-space: nowrap; /* Убираем перенос текста */
+}
+.icon-container1 .icon {
+    width: 34px;   /* 34 / 2 */
+    height: 34px;  /* 34 / 2 */
+    object-fit: cover;
+    display: block;
+}
         /* Стили меню */
         #passwordContainer {
         position: fixed;
@@ -805,14 +828,13 @@ updateOverlayFilter();
             let iconClass = 'red-id';
             let shiftedClass = ''
             let shiftedClasss = ''
-let objectIdCounter1 = '0620';
 
-function getNextObjectId1() {
-    return objectIdCounter1++;
-}
+
+
             if (speed === 0) {  
     // Если скорость 0, сразу устанавливаем иконку EPVO
     iconUrl = 'EPVO.png'; 
+    iconClass = 'blue-id';  
 
     // Генерируем ID от 500000 и время по Минску
     const objectId1 = getNextObjectId(); 
@@ -820,25 +842,22 @@ function getNextObjectId1() {
 
     // Меняем iconHtml ПОЛНОСТЬЮ
     iconHtml = `
-        <div class="icon-container ${iconClass}">
+  <div class="icon-container1 ${iconClass}">
             <img src="${iconUrl}" class="icon" />
-            <div class="info-container ${shiftedClass} ${shiftedClasss}">
-                <span class="label1-container ${iconClass}">${objectId} ${kievTime}</span>
-                <div class="info-container ${shiftedClass} ${shiftedClasss}">
-                <span class="r1-container ${iconClass}">ЕПВО</span>
-                <span class="rls1-container ${iconClass}">${objectId1}</span>
+            <div class="info-container1 ${shiftedClass} ${shiftedClasss}">
+                <span class="label1-container ${iconClass}">${objectId1} ${kievTime}</span>
+                <div class="info-container1 ${shiftedClass} ${shiftedClasss}">
+                <span class="r1-container ${iconClass}">EPA</span>
+                <span class="rls1-container ${iconClass}">interesting s</span>
             </div>
                         </div>
         </div>
     `;
-    setTimeout(() => {
-        marker.remove();
-    }, 1200000);
 } else {
     // Условия для выбора иконки в зависимости от скорости
     if (speed >= 120 && speed <= 121) {
         iconUrl = 'supercam.png';
-    } else if (speed > 120 && speed <= 170) {
+    } else if (speed > 120 && speed <= 180) {
         iconUrl = 'shahed.png';
     } else if (speed >= 7559 && speed < 7560) {
         iconUrl = 'iskander.png';
@@ -881,31 +900,23 @@ function getNextObjectId1() {
         iconUrl = 'orlan.png';
     } else if (speed >= 5400 && speed <= 5401) {
         iconUrl = 'atacms.png';
-        shiftedClass = 'shifted-info-container';
         iconClass = 'blue-id'; // Синий ID для ATACMS
-        lineColor = '#006aff';  // Set blue line color for blue objects
     } else if (speed >= 959 && speed <= 960) {
         iconUrl = 'storm-shadow.png';
-        shiftedClass = 'shifted-info-container';
         iconClass = 'blue-id';
-        lineColor = '#006aff';  // Set blue line color for blue objects
     } else if (speed >= 190 && speed <= 191) {
         iconUrl = 'lutiy.png';
         iconClass = 'blue-id';
-        lineColor = '#006aff';  // Set blue line color for blue objects
     } else if (speed >= 200 && speed <= 201) {
         iconUrl = 'beaver.png';
         iconClass = 'blue-id';
-        lineColor = '#006aff';  // Set blue line color for blue objects
     } else if (speed >= 329 && speed <= 330) {
         iconUrl = 'rys`.png';
         iconClass = 'blue-id';
-        lineColor = '#006aff';  // Set blue line color for blue objects
     } else if (speed >= 74 && speed <= 75) {
         iconUrl = 'Molnia.png';
     } else if (speed >= 3000 && speed <= 3001) {
         iconUrl = 'gmlrs.png';
-        shiftedClass = 'shifted-info-container';
         iconClass = 'blue-id';
     } else if (speed >= 900 && speed <= 901) {
         iconUrl = 'iskanderk.png';
@@ -917,7 +928,6 @@ function getNextObjectId1() {
         iconUrl = 'su-24.png';
     } else if (speed >= 1102 && speed <= 1103) {
         iconUrl = 'su-24 BLR.png';
-        iconClass = 'blue-id';
     } else if (speed >= 1002 && speed <= 1003) {
         iconUrl = 'f-16.png';
         iconClass = 'zl';  
@@ -964,8 +974,8 @@ function getNextObjectId1() {
         // Если скорость не попала ни в одно условие, ставим "neyst tip.png"
         iconUrl = 'neyst tip.png';
     }
-}if (iconClass === 'blue-id') {
-    const objectId2 = getNextObjectId1(); 
+ if (iconClass === 'blue-id') {
+  const objectId2 = getNextObjectId1();
     iconUrl = 'blue.png';
     iconHtml = `
     <div class="icon-container ${iconClass}">
@@ -973,12 +983,12 @@ function getNextObjectId1() {
       <div class="info-container ${shiftedClass} ${shiftedClasss}">
         <span class="label-container ${iconClass}">0${objectId2}р</span>
         <span class="r-container ${iconClass}">СВ</span>
-        <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span>
+        <span class="rls-container ${iconClass}">${getRlsForObject(objectId2, iconUrl)}</span>
       </div>
     </div>
     `;
     } else if (iconClass === 'zl') {
-    const objectId2 = getNextObjectId1(); 
+  const objectId2 = getNextObjectId1();
     iconUrl = 'zl.png';
     iconHtml = `
         <div class="icon-container ${iconClass}">
@@ -986,7 +996,7 @@ function getNextObjectId1() {
             <div class="info-container ${shiftedClass} ${shiftedClasss}">
                 <span class="label-container ${iconClass}">0${objectId2}р</span>
                 <span class="r-container ${iconClass}">ЗЛ</span>
-                <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span>
+                <span class="rls-container ${iconClass}">${getRlsForObject(objectId2, iconUrl)}</span>
             </div>
         </div>
     `;  
@@ -1003,16 +1013,18 @@ function getNextObjectId1() {
         </div>
     `;
 }
+}
 
+                let iconCreated = false;
 
-                    const icon = L.divIcon({
-                        className: 'icon',
-                        html: iconHtml,
-                        iconSize: [30, 30],
-                        iconAnchor: [20, 20],
-                    });
+const icon = L.divIcon({
+    className: 'icon',
+    html: iconHtml,
+    iconSize: [30, 30],
+    iconAnchor: [20, 20],
+});
 
-                const marker = L.marker([lat, lng], { icon }).addTo(map);
+const marker = L.marker([lat, lng], { icon }).addTo(map);
 
 // Сопоставление английских названий с русскими
 const translations = {
@@ -1067,7 +1079,29 @@ let targetLngVar = targetLng;
 let startTime = null;
 let isActive = true;
 
-// Popup контент с кнопкой
+// Присвоение класса и имени иконки
+marker.iconClass = iconClass;
+marker.iconName = iconUrl;
+
+// ====== Создание линии сразу при появлении маркера ======
+marker.trailCoords = [[lat, lng]];
+let lineColor = '#dd0347'; // дефолт
+if (marker.iconClass === 'blue-id') {
+    lineColor = '#006AFE';
+} else if (marker.iconClass === 'zl') {
+    lineColor = '#000000'; // черный
+}
+marker.trailLine = L.polyline(marker.trailCoords, {
+    color: lineColor,
+    weight: 2,
+    opacity: 0.8,
+    renderer: L.canvas() // ускорение при многих линиях
+}).addTo(map);
+
+// Скрываем линию по умолчанию
+marker.trailLine.setStyle({ opacity: 0 });
+
+// ====== Popup контент ======
 const customPopupContent = `
     <div class="custom-popup">
         <p><strong>ЦЕЛЬ (2111):</strong> ${objectType}</p>
@@ -1078,19 +1112,19 @@ const customPopupContent = `
 
 marker.bindPopup(customPopupContent);
 
-// Обработчик открытия popup с кнопкой
+// ====== Обработчик открытия popup ======
 marker.on('popupopen', () => {
-    setTimeout(() => { // чтобы HTML точно появился в DOM
+    if (marker.trailLine) marker.trailLine.setStyle({ opacity: 0.8 });
+
+    setTimeout(() => {
         const popupEl = marker.getPopup().getElement();
         if (!popupEl) return;
-
         const btn = popupEl.querySelector('#changeCoordsBtn');
         if (!btn) return;
 
         btn.onclick = () => {
             const newCoords = prompt("Введите новые координаты (lat,lng):");
             if (!newCoords) return;
-
             const [newLat, newLng] = newCoords.split(',').map(Number);
             if (isNaN(newLat) || isNaN(newLng)) {
                 alert("Некорректные координаты");
@@ -1108,79 +1142,90 @@ marker.on('popupopen', () => {
 
             if (!isActive) {
                 isActive = true;
-                requestAnimationFrame(updatePosition);
+                requestAnimationFrame(() => updatePosition(marker));
             }
         };
     }, 0);
 });
 
-// Клик по маркеру для открытия popup
+// ====== Обработчик закрытия popup ======
+marker.on('popupclose', () => {
+    if (marker.trailLine) marker.trailLine.setStyle({ opacity: 0 });
+});
+
+// ====== Клик по маркеру для открытия popup ======
 marker.on('click', () => marker.openPopup());
 
-// Поворот иконки с учётом скорости
-function rotateIcon(lat1, lng1, lat2, lng2, speed) {
-    if (speed === 0) {
-        marker._icon.querySelector('.icon').style.transform = `rotate(0deg)`; 
-        return;
+// ====== Поворот иконки ======
+function rotateIcon(lat1, lng1, lat2, lng2) {
+    if (!marker._icon) return;
+    const iconEl = marker._icon.querySelector('.icon');
+    if (!iconEl) return;
+
+    if (speed > 0) {
+        const course = calculateCourse(lat1, lng1, lat2, lng2) * (180 / Math.PI);
+        const angle = (course + 360) % 360;
+        iconEl.style.transform = `rotate(${angle}deg)`;
+    } else {
+        iconEl.style.transform = `rotate(0deg)`;
     }
-    const course = calculateCourse(lat1, lng1, lat2, lng2) * (180 / Math.PI);
-    const angle = (course + 360) % 360;
-    marker._icon.querySelector('.icon').style.transform = `rotate(${angle}deg)`;
 }
 
-rotateIcon(lat, lng, targetLat, targetLng, speed);
+rotateIcon(lat, lng, targetLat, targetLng);
 
-// Добавляем маркер в массив
+// ====== Добавляем маркер в массив ======
 markers.push(marker);
 
-// Анимация движения с линиями
-if (speed > 0) {
-    marker.trailCoords = [[lat, lng]];
-    marker.trailLine = L.polyline(marker.trailCoords, {
-        color: '#006AFE', 
-        weight: 2, 
-        opacity: 0.8
-    }).addTo(map);
-}
-
-function updatePosition(timestamp) {
+// ====== Анимация движения ======
+function updatePosition(marker, timestamp = null) {
+    if (!timestamp) timestamp = performance.now();
     if (!startTime) startTime = timestamp;
     const elapsedTime = (timestamp - startTime) / 1000;
 
-    const [newLat, newLng] = calculateNewPosition(currentLat, currentLng, speed, elapsedTime, targetLatVar, targetLngVar);
-    marker.setLatLng([newLat, newLng]);
-    rotateIcon(newLat, newLng, targetLatVar, targetLngVar, speed);
+    const [newLat, newLng] = calculateNewPosition(
+        currentLat, currentLng, speed, elapsedTime, targetLatVar, targetLngVar
+    );
 
-    if (marker.trailLine) {
+    marker.setLatLng([newLat, newLng]);
+    rotateIcon(newLat, newLng, targetLatVar, targetLngVar);
+
+    // Обновляем линию каждые 5 кадров
+    marker.frameCounter = marker.frameCounter || 0;
+    marker.frameCounter++;
+    if (marker.trailLine && marker.frameCounter % 5 === 0) {
         marker.trailCoords.push([newLat, newLng]);
         marker.trailLine.setLatLngs(marker.trailCoords);
     }
 
+    currentLat = newLat;
+    currentLng = newLng;
+
     if (haversine(newLat, newLng, targetLatVar, targetLngVar) > 0.1 && isActive) {
-        requestAnimationFrame(updatePosition);
+        startTime = timestamp;
+        requestAnimationFrame(() => updatePosition(marker));
     } else {
         isActive = false;
         marker.remove();
-        if (marker.trailLine) marker.trailLine.remove();
+        if (marker.trailLine) marker.trailLine.setStyle({ opacity: 0 });
     }
 }
 
-requestAnimationFrame(updatePosition);
+// ====== Старт анимации ======
+isActive = true;
+requestAnimationFrame(() => updatePosition(marker));
 
+marker.on('click', function () {
+    if (deleteMode) {
+        if (confirm('Удалить этот объект?')) {
+            // Удаляем и маркер, и линию
+            if (marker.trailLine) marker.trailLine.remove();
+            marker.remove();
 
-                    marker.on('click', function () {
-        if (deleteMode) {
-            if (confirm('Удалить этот объект?')) {
-                // Скрываем маркер, а не удаляем его
-                marker.remove();
-                // или marker.setVisible(false); // Для других библиотек
-
-                deleteMode = false;
-                const deleteButton = document.getElementById('deleteButton');
-                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-            }
+            deleteMode = false;
+            document.getElementById('deleteButton').innerHTML = '<i class="fas fa-trash-alt"></i>';
         }
-    });
+    }
+});
 
                 });
             });
@@ -1321,7 +1366,6 @@ let objectIdCounter = 564100;
 function getNextObjectId() {
     return objectIdCounter++;
 
-
     const iconHTML = `
         <div class="icon-container ${iconClass}">
             <img src="${iconUrl}" class="icon" />
@@ -1333,12 +1377,7 @@ function getNextObjectId() {
     `;
     return iconHTML;
 }
-document.getElementById('toggleTemplateButton').addEventListener('click', () => {
-    useNewTemplate = !useNewTemplate;
-    const state = useNewTemplate ? 'Новый шаблон включен' : 'Обычный шаблон включен';
-    alert(state);
-});
-let objectIdCounter1 = '0620';
+let objectIdCounter1 = 550;
 
 function getNextObjectId1() {
     return objectIdCounter1++;
