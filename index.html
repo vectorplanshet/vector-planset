@@ -1110,7 +1110,12 @@ const customPopupContent = `
     </div>
 `;
 
-marker.bindPopup(customPopupContent);
+// Привязываем попап к маркеру с смещением вверх
+marker.bindPopup(customPopupContent, {
+    offset: [0, 200],   // Попап будет над маркером
+    autoPan: true,      // Карта подстраивается при открытии
+    closeButton: true
+});
 
 // ====== Обработчик открытия popup ======
 marker.on('popupopen', () => {
