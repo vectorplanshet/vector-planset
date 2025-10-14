@@ -857,8 +857,17 @@ updateOverlayFilter();
     // Условия для выбора иконки в зависимости от скорости
     if (speed >= 120 && speed <= 121) {
         iconUrl = 'supercam.png';
-    } else if (speed > 120 && speed <= 180) {
+} else if (speed > 120 && speed <= 200) {
+    // Генерируем случайное число от 0 до 1
+    const random = Math.random(); // число от 0 до 1
+
+    if (random < 0.2) {
+        // 80% шанс
+        iconUrl = 'neyst tip.png';
+    } else {
+        // 20% шанс
         iconUrl = 'shahed.png';
+    }
     } else if (speed >= 7559 && speed < 7560) {
         iconUrl = 'iskander.png';
         shiftedClass = 'shifted-info-container';
@@ -1550,6 +1559,21 @@ let objectIdCounter1 = 550;
 function getNextObjectId1() {
     return objectIdCounter1++;
 }
+    const lat = 53.86755504711071;
+    const lon = 27.54265364432149;
+
+          // Определяем кастомную иконку (chel.png находится в той же папке)
+    const chelIcon = L.icon({
+      iconUrl: 'chel.png',        // путь к изображению
+      iconSize: [32 , 32],        // размер иконки в пикселях — подберите под своё изображение
+      iconAnchor: [16, 32],      // точка иконки, которая будет привязана к координатам (центр-низ)
+      popupAnchor: [0, -60],     // где показывать popup относительно иконки
+      className: ''              // можно добавить CSS-класс при надобности
+    });
+
+    // Добавляем маркер с этой иконкой
+    const marker = L.marker([lat, lon], { icon: chelIcon }).addTo(map);
+
     </script>
 </body>
 </html>
