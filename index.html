@@ -484,9 +484,22 @@ input[type="text"]:focus {
     background-color: #2d3240;
     color: #c4c4c4;
 }
+#warning-message {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 25px;       /* 25 / 2 */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: rgb(255, 0, 68);
+  text-align: center;
+  padding: 5px;       /* 5 / 2 */
+  font-size: 14px;       /* 14 / 2 */
+  z-index: 9999;
+}
     </style>
 </head>
 <body>
+        <div id="warning-message">Ваша версия сістэмы "Вектор-ПВО" устарэла. Для атрымання абнаўленняў і падтрымкі, звярніцеся да камандзіра падраздзялення.</div>
     <div id="passwordContainer">    
         <img src="iconpas.png">
         <div class="inputWrapper">
@@ -531,27 +544,27 @@ input[type="text"]:focus {
     <div id="alert-container">
         <button id="alert-button"><i class="fas fa-bell"></i></button>
         <div id="alert-menu">
-            <h3>Дать тревогу</h3>
+            <h3>????????????</h3>
             <div>
-                <input type="checkbox" id="Гомельская область"><label for="Гомельская область">Гомельская область</label>
+                <input type="checkbox" id="Гомельская область"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Брестская область"><label for="Брестская область">Брестская область</label>
+                <input type="checkbox" id="Брестская область"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Минск"><label for="Минск">Минск</label>
+                <input type="checkbox" id="Минск"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Минская область"><label for="Минская область">Минская область</label>
+                <input type="checkbox" id="Минская область"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Могилёвская область"><label for="Могилёвская область">Могилёвская область</label>
+                <input type="checkbox" id="Могилёвская область"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Витебская область"><label for="Витебская область">Витебская область</label>
+                <input type="checkbox" id="Витебская область"><label for="????????????">????????????</label>
             </div>
             <div>
-                <input type="checkbox" id="Гродненская область"><label for="Гродненская область">Гродненская область</label>
+                <input type="checkbox" id="Гродненская область"><label for="????????????">????????????</label>
             </div>
         </div>
 
@@ -990,9 +1003,9 @@ updateOverlayFilter();
     <div class="icon-container ${iconClass}">
       <img src="${iconUrl}" class="icon" />
       <div class="info-container ${shiftedClass} ${shiftedClasss}">
-        <span class="label-container ${iconClass}">0${objectId2}р</span>
-        <span class="r-container ${iconClass}">СВ</span>
-        <span class="rls-container ${iconClass}">${getRlsForObject(objectId2, iconUrl)}</span>
+                <span class="label-container ${iconClass}">ERROR</span>
+                <span class="r-container ${iconClass}">?</span>
+                <span class="rls-container ${iconClass}">NONE</span>        
       </div>
     </div>
     `;
@@ -1003,9 +1016,9 @@ updateOverlayFilter();
         <div class="icon-container ${iconClass}">
             <img src="${iconUrl}" class="icon" />
             <div class="info-container ${shiftedClass} ${shiftedClasss}">
-                <span class="label-container ${iconClass}">0${objectId2}р</span>
-                <span class="r-container ${iconClass}">ЗЛ</span>
-                <span class="rls-container ${iconClass}">${getRlsForObject(objectId2, iconUrl)}</span>
+                <span class="label-container ${iconClass}">ERROR</span>
+                <span class="r-container ${iconClass}">?</span>
+                <span class="rls-container ${iconClass}">NONE</span>        
             </div>
         </div>
     `;  
@@ -1015,9 +1028,9 @@ updateOverlayFilter();
         <div class="icon-container ${iconClass}">
             <img src="${iconUrl}" class="icon" />
              <div class="info-container ${shiftedClass} ${shiftedClasss}">
-                <span class="label-container ${iconClass}">${objectId}р</span>
-                <span class="r-container ${iconClass}">ПП·</span>
-                <span class="rls-container ${iconClass}">${getRlsForObject(objectId, iconUrl)}</span>                
+                <span class="label-container ${iconClass}">ERROR</span>
+                <span class="r-container ${iconClass}">?</span>
+                <span class="rls-container ${iconClass}">NONE</span>                
             </div>
         </div>
     `;
@@ -1179,8 +1192,8 @@ if (document.readyState === "loading") {
 // ==== Popup для маркера ====
 const customPopupContent = `
     <div class="custom-popup">
-        <p><strong>ЦЕЛЬ:</strong> ${objectType}</p>
-        <p><strong>СКОРОСТЬ:</strong> ${speed} км/ч</p>
+        <p><strong>ЦЕЛЬ:</strong>?</p>
+        <p><strong>СКОРОСТЬ:</strong> ? км/ч</p>
         <button id="changeCoordsBtn">Изменить координаты</button>
     </div>
 `;
